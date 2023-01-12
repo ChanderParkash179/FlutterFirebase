@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "88325138318",
+    "project_id": "first-flutter-host",
+    "storage_bucket": "first-flutter-host.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88325138318:android:110b0c5db05fe4865ca6df",
+        "android_client_info": {
+          "package_name": "com.firebase.firebasetuts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88325138318-or8ck4ds9sd4fi9sbs2uitahmiqd2ano.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN_73bEp_2BU-xl6lwPbVrHFEaR6BgtYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88325138318-or8ck4ds9sd4fi9sbs2uitahmiqd2ano.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
