@@ -165,7 +165,7 @@ class _AddPostPageState extends State<AddPostPage> {
             Navigator.pushNamed(context, MyRoutes().postsListRoute);
           },
           child: const Icon(
-            CupertinoIcons.add_circled,
+            CupertinoIcons.line_horizontal_3,
           ),
         ),
       ),

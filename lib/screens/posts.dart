@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebasetuts/utils/constants.dart';
 import 'package:firebasetuts/utils/routes.dart';
 import 'package:firebasetuts/widgets/space.dart';
@@ -40,6 +37,7 @@ class _PostsPageState extends State<PostsPage> {
           ),
           child: Column(
             children: [
+              Spaces().verticalSpace(25),
               Text(
                 constants().postTitle.toUpperCase(),
                 textAlign: TextAlign.center,
@@ -49,29 +47,67 @@ class _PostsPageState extends State<PostsPage> {
                   color: Colors.white,
                 ),
               ),
-              Spaces().verticalSpace(20),
+              Spaces().verticalSpace(10),
+              const Divider(
+                indent: 50,
+                endIndent: 50,
+                color: Colors.white,
+                height: 5,
+              ),
+              Spaces().verticalSpace(30),
               Expanded(
-                child: FirebaseAnimatedList(
-                  query: reference,
-                  itemBuilder: (context, snapshot, animation, index) {
-                    return ListTile(
-                      leading: Text(
-                        snapshot.child('title').value.toString(),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      trailing: Text(
-                        snapshot.child('id').value.toString(),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    );
+                child: StreamBuilder(
+                  stream: reference.onValue,
+                  builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 5,
+                      ));
+                    } else {
+                      Map<dynamic, dynamic> map =
+                          snapshot.data!.snapshot.value as dynamic;
+                      List list = [];
+                      list.clear();
+
+                      list = map.values.toList();
+
+                      return ListView.builder(
+                        itemCount: snapshot.data!.snapshot.children.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    list[index]['title'],
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: constants().fontSize - 6),
+                                  ),
+                                  Text(
+                                    list[index]['id'],
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: constants().fontSize - 6),
+                                  ),
+                                ],
+                              ),
+                              Spaces().verticalSpace(5),
+                              const Divider(
+                                indent: 25,
+                                endIndent: 25,
+                                color: Colors.white,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               )
