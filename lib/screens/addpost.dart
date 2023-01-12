@@ -160,6 +160,14 @@ class _AddPostPageState extends State<AddPostPage> {
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, MyRoutes().postsListRoute);
+          },
+          child: const Icon(
+            CupertinoIcons.add_circled,
+          ),
+        ),
       ),
     );
   }
