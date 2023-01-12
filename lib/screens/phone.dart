@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetuts/screens/verifyphone.dart';
+import 'package:firebasetuts/utils/constants.dart';
 import 'package:firebasetuts/utils/toast.dart';
 import 'package:firebasetuts/widgets/space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../utils/constants.dart';
 
 class PhonePage extends StatefulWidget {
   const PhonePage({Key? key}) : super(key: key);

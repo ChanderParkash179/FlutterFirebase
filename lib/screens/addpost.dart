@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebasetuts/utils/constants.dart';
@@ -110,12 +109,9 @@ class _AddPostPageState extends State<AddPostPage> {
                         loading = true;
                       });
 
-                      databaseRef
-                          .child(
-                              DateTime.now().millisecondsSinceEpoch.toString())
-                          .set({
+                      databaseRef.child(id).set({
                         'title': postController.text.toString(),
-                        'id': (id).substring(8, id.length)
+                        'id': id,
                       }).then((value) {
                         FlutterToast().toastMsg('POST ADDED!');
 

@@ -38,10 +38,11 @@ dependencies:
   firebase_storage: any
   firebase_auth: any
   cloud_firestore: any
-  firebase_database : any
+  firebase_database: any
   fluttertoast: ^8.1.2
   firebase_core: ^2.4.1
   provider: any
+  google_fonts: any
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebasetuts/utils/constants.dart';
 import 'package:firebasetuts/utils/routes.dart';
 import 'package:firebasetuts/widgets/space.dart';
@@ -14,6 +15,7 @@ class PostsPage extends StatefulWidget {
 
 class _PostsPageState extends State<PostsPage> {
   final reference = FirebaseDatabase.instance.ref('POST');
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,61 +54,189 @@ class _PostsPageState extends State<PostsPage> {
                 indent: 50,
                 endIndent: 50,
                 color: Colors.white,
-                height: 5,
+                height: 10,
               ),
-              Spaces().verticalSpace(30),
+              Spaces().verticalSpace(20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: TextFormField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    hintText: 'Search Here!',
+                    hintStyle: const TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 1.5,
+                    ),
+                    labelText: constants().search,
+                    labelStyle: const TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 1.5,
+                    ),
+                    prefixIcon: const Icon(
+                      CupertinoIcons.search,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onChanged: (value) => setState(() {}),
+                ),
+              ),
+              Spaces().verticalSpace(10),
+              const Divider(
+                indent: 70,
+                endIndent: 70,
+                color: Colors.white,
+                height: 10,
+              ),
+              Spaces().verticalSpace(10),
               Expanded(
-                child: StreamBuilder(
-                  stream: reference.onValue,
-                  builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 5,
-                      ));
-                    } else {
-                      Map<dynamic, dynamic> map =
-                          snapshot.data!.snapshot.value as dynamic;
-                      List list = [];
-                      list.clear();
+                child: FirebaseAnimatedList(
+                  query: reference,
+                  itemBuilder: (context, snapshot, animation, index) {
+                    final titleData = snapshot.child('title').value.toString();
+                    final idData = snapshot.child('id').value.toString();
 
-                      list = map.values.toList();
-
-                      return ListView.builder(
-                        itemCount: snapshot.data!.snapshot.children.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    list[index]['title'],
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: constants().fontSize - 6),
-                                  ),
-                                  Text(
-                                    list[index]['id'],
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: constants().fontSize - 6),
-                                  ),
-                                ],
-                              ),
-                              Spaces().verticalSpace(5),
-                              const Divider(
-                                indent: 25,
-                                endIndent: 25,
+                    if (searchController.text.isEmpty) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(
+                              snapshot.child('title').value.toString(),
+                              style: const TextStyle(
+                                fontSize: 24,
                                 color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          );
-                        },
+                            ),
+                            subtitle: Text(
+                              snapshot.child('id').value.toString(),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                              child: PopupMenuButton(
+                                color: Color(constants().primaryColor),
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                      child: ListTile(
+                                    leading: Icon(
+                                      Icons.edit,
+                                      color: Color(constants().secondaryColor),
+                                    ),
+                                    title: Text(
+                                      constants().edit,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )),
+                                  PopupMenuItem(
+                                      child: ListTile(
+                                    leading: Icon(
+                                      Icons.delete,
+                                      color: Color(constants().secondaryColor),
+                                    ),
+                                    title: Text(
+                                      constants().delete,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )),
+                                ],
+                                child: const Icon(
+                                  Icons.more_vert,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Divider(
+                            color: Colors.white,
+                            indent: 50,
+                            endIndent: 50,
+                          )
+                        ],
                       );
+                    } else if ((titleData.toLowerCase().contains(
+                            searchController.text.toLowerCase().toString())) ||
+                        (idData.toLowerCase().contains(
+                            searchController.text.toLowerCase().toString()))) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(
+                              snapshot.child('title').value.toString(),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Text(
+                              snapshot.child('id').value.toString(),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                              child: PopupMenuButton(
+                                color: Color(constants().primaryColor),
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                      value: 1,
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.edit,
+                                          color:
+                                              Color(constants().secondaryColor),
+                                        ),
+                                        title: Text(
+                                          constants().edit,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )),
+                                  PopupMenuItem(
+                                      value: 2,
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.delete,
+                                          color:
+                                              Color(constants().secondaryColor),
+                                        ),
+                                        title: Text(
+                                          constants().delete,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )),
+                                ],
+                                child: const Icon(
+                                  Icons.more_vert,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Divider(
+                            color: Colors.white,
+                            indent: 50,
+                            endIndent: 50,
+                          )
+                        ],
+                      );
+                    } else {
+                      return Container();
                     }
                   },
                 ),

@@ -8,6 +8,7 @@ import 'package:firebasetuts/screens/signup.dart';
 import 'package:firebasetuts/screens/splash.dart';
 import 'package:firebasetuts/utils/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.light,
+      theme: ThemeData(
+        fontFamily: GoogleFonts.lato().fontFamily,
+      ),
       initialRoute: MyRoutes().defaultRoute,
       routes: {
         MyRoutes().defaultRoute: (context) => SplashScreen(),

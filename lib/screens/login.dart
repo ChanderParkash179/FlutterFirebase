@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebasetuts/screens/phone.dart';
 import 'package:firebasetuts/utils/constants.dart';
 import 'package:firebasetuts/utils/routes.dart';
 import 'package:firebasetuts/utils/toast.dart';
@@ -229,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Spaces().verticalSpace(30),
                     MyButton().getButton(
-                        context, MyRoutes().phoneRoute, constants().phoneTitle),
+                      context, MyRoutes().phoneRoute, constants().phoneTitle),
                   ],
                 ),
               ),

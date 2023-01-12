@@ -14,6 +14,9 @@ class constants {
   var verificationBtnTitle = 'verify';
   var postTitle = 'POST';
   var addPost = 'ADD';
+  var search = 'SEARCH';
+  var edit = 'Edit';
+  var delete = 'Delete';
 
   // SIZES
   double fontSize = 24;
